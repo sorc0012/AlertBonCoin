@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<link rel="stylesheet" href="https://www.w3schools.com/lib/w3.css">
+<link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-green.css">
+<!-- Custom styles for this template -->
+<link href="{{ url_for('static', filename = 'index.css') }}" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<head>
+    <meta charset="UTF-8">
+    <title>Alert Bon Coin App</title>
+</head>
+<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.1.1.min.js"></script>
+<script type = "text/javascript"
+         src = "{{ url_for('static', filename = 'script.js') }}" ></script>
+<body>
+  <div class="flex-container">
+    <header class="w3-container w3-theme">
+    <!-- Add BUTTON -->
+        <ul style="list-style: none;">
+            <li><i class="w3-btn-floating-large w3-theme-action w3-left" onclick=createSearchWindow("false","Créer")>+</i></li>
+            <li><p class="w3-center w3-panel w3-xxlarge w3-shadow">Alert Bon Coin - Application</p></li>
+        </ul>
+    </header>
+    <!-- Search List -->
+        <nav class="w3-sidenav w3-border w3-light-grey" style="width:25%">
+        {% for value in navlist: %}
+            <a class="w3-border-bottom w3-hover-green" href="{{url_for('result', name=value.name)}}">{{ value.name }}</a>
+        {% endfor %}
+        </nav>
+    <article style="margin:5px; margin-left:26%">
+        <!-- Result MENU -->
+        {% if name %}
+        <div class="w3-layout-container">
+            <i class="w3-left fa fa fa-info-circle" style="font-size:24px" onclick=createSearchWindow("true","Modifier")></i>
+            <i class="w3-left fa fa-refresh" style="font-size:24px" onclick=updateResults()></i>
+            <i class="w3-left fa fa-trash-o" style="font-size:24px" onclick=emptyResults()></i>
+            <i class="w3-right 	fa fa-wrench" style="font-size:24px" onclick=createConfigWindow()></i>
+        </div>
+        {% endif %}
+        {% if result_list %}
+        <div class="w3-responsive" id="result_table">
+          <table class="w3-table-all w3-striped">
+            <tr class="w3-green">
+                <th>Image</th>
+                <th>Titre</th>
+                <th>Prix</th>
+                <th>Date</th>
+            </tr>
+              {% for result in result_list: %}
+              <tr>
+                  <td><img src={{result.img_url}}></td>
+                  <td><a href={{result.url}}>{{result.title}}</a></td>
+                  <td>{{result.price}}</td>
+                  <td>{{result.date}}</td>
+              </tr>
+                {% endfor %}
+          </table>
+        </div>
+        {% endif %}
+    </article>
+    <!-- The Modal -->
+    <div id="mw_search" class="w3-modal">
+      <div class="w3-modal-content">
+        <div class="w3-container">
+          <span onclick="document.getElementById('mw_search').style.display='none'"
+          class="w3-closebtn">&times;</span>
+          <form class="w3-container" action="save_search" method="post">
+          <label class="w3-label w3-text-green">Nom de l'alerte</label>
+          <input class="w3-input w3-border" type="text" name="name" value="{{search.name}}" required>
+          <label class="w3-label w3-text-green" id="i_lb_url">Url</label>
+          <input class="w3-input w3-border" type="url" name="url" id="i_url" value="{{search.url}}" required>
+          <label class="w3-label w3-text-green">Email</label>
+          <input class="w3-input w3-border" type="email" name="email" value="{{search.email}}">
+          <label class="w3-label w3-text-green">Prix minimum</label>
+          <input class="w3-input w3-border" type="number" name="prix_min" min="0" max="999999" value="{{search.price_min}}">
+          <label class="w3-label w3-text-green">Prix maximum</label>
+          <input class="w3-input w3-border" type="number" name="prix_max" min="0" max="999999" value="{{search.price_max}}">
+          <p></p>
+          <input class="w3-green" id="but_cre" style="font-size:16px" type="submit" value="Créer">
+              {% if name %}
+          </form>
+          <button class="w3-red" id="but_del" style="font-size:16px" onclick="location.href='./delete/{{name}}'" >Supprimer<i class="fa fa-trash-o"></i></button>
+              {% endif %}
+              <p></p>
+        </div>
+      </div>
+    </div>
+          <!-- The Modal -->
+    <div id="mw_config" class="w3-modal">
+      <div class="w3-modal-content">
+        <div class="w3-container">
+          <span onclick="document.getElementById('mw_config').style.display='none'"
+          class="w3-closebtn">&times;</span>
+          <form class="w3-container">
+          <label class="w3-label w3-text-green">Mise à jour Automatique</label>
+              <!-- Rectangular switch -->
+            <label class="switch">
+                <input type="checkbox" id="config_autoupdt">
+                    <div class="slider round"></div></label>
+                </input>
+            </label>
+          <p></p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
