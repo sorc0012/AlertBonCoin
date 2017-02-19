@@ -8,8 +8,8 @@ BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 # Define the database - we are working with
 # SQLite for this example
 
-# SQLALCHEMY_DATABASE_URI = 'mysql://sorc0012:Sorcalways12@mysql-sorc0012.alwaysdata.net/sorc0012_alertboncoindb'
-SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(BASE_DIR, 'app.db')
+SQLALCHEMY_DATABASE_URI = 'postgresql://sorc0012:alwaysD12B@postgresql-sorc0012.alwaysdata.net/sorc0012_alertboncoindb'
+# SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(BASE_DIR, 'app.db')
 print("DBURI: " + SQLALCHEMY_DATABASE_URI)
 
 SQLALCHEMY_MIGRATE_REPO = os.path.join(BASE_DIR, 'db_repository')

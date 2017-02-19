@@ -27,7 +27,7 @@ class Utils:
         searches = models.Search.query.all()
         for search in searches:
             Utils.update_result_url(db_session, i_search_name=search.name, i_url=search.url, i_id_search=search.id, i_max_price=search.price_max, \
-                                                 i_min_price=search.price_min, i_email=i_email)
+                                                 i_min_price=search.price_min, i_email=search.email)
         return
 
     @staticmethod
@@ -55,6 +55,7 @@ class Utils:
                 res_list.append(res)
         db_session.commit()
         if i_email:
+            print("Email sent to " + i_email + " for " + i_search_name)
             Utils.send_result_by_email(i_results=res_list, i_email=i_email, i_title=i_search_name)
 
 
@@ -65,7 +66,8 @@ class Utils:
             # the text file contains only ASCII characters.
             msg = MIMEMultipart('alternative')
 
-            me = 'btdummyemailbox@gmail.com'
+            # me = 'btdummyemailbox@gmail.com'
+            me = 'sorc0012@alwaysdata.net'
             you = i_email
             msg['Subject'] = str(len(i_results)) + ' nouveaux resultats pour ' + i_title
             msg['From'] = me
@@ -89,9 +91,11 @@ class Utils:
             msg.attach(part2)
 
             # Send the message via local SMTP server.
-            server = smtplib.SMTP('smtp.gmail.com', 587)
+            server = smtplib.SMTP('smtp-sorc0012.alwaysdata.net', 587)
+            # server = smtplib.SMTP('smtp.gmail.com', 587)
             server.starttls()
-            server.login(me, "btdummyemail")
+            # server.login(me, "btdummyemail")
+            server.login(me, "alwaysemail12")
             # sendmail function takes 3 arguments: sender's address, recipient's address
             # and message to send - here it is sent as one string.
             server.sendmail(me, you, msg.as_string())
@@ -237,10 +241,10 @@ class Utils:
     def get_results_html(new_res: []):
         content = ''
         for result in new_res:
-            line = "<tr> " + "<td><img src=\"https:" + result.img_url + "\"></td>" \
-                   + "<td><a href=\"https:" + result.url + "\">" + result.title + "</a></td>" \
+            line = "<tr> " + "<td><img src=\"https:" + str(result.img_url) + "\"></td>" \
+                   + "<td><a href=\"https:" + str(result.url) + "\">" + str(result.title) + "</a></td>" \
                    + "<td>" + str(result.price) + "</td>" \
-                   + "<td>" + result.date + "</td>"
+                   + "<td>" + str(result.date) + "</td>"
             content += line
 
         # Create the body of the message (a plain-text and an HTML version).

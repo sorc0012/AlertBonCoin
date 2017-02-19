@@ -71,7 +71,7 @@ def result(name):
         print("results for %s" % name)
     search_list = db.session.query(models.Search.name)
     results_list = models.Results.query.join(models.Search, models.Search.id == models.Results.id_search) \
-        .filter(models.Search.name == name).order_by(models.Results.lbc_id.desc()).all()
+        .filter(models.Search.name == name).order_by(models.Results.date.desc()).all()
     search = models.Search.query.filter_by(name=name).first()
     print(search)
     return render_template('index.html', navlist=search_list, result_list=results_list, name=name, search=search)

@@ -1,5 +1,5 @@
-from app.static.utils import Utils
 from app import db
+from app.static.utils import Utils
 import sqlalchemy
 import os
 
